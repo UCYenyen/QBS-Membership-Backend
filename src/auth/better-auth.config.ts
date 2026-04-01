@@ -2,12 +2,12 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import 'dotenv/config'; 
+import { expo } from '@better-auth/expo'; // <-- Import the plugin
+import 'dotenv/config';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
 });
-
 const prisma = new PrismaClient({ adapter }); 
 
 export const auth = betterAuth({
@@ -17,4 +17,8 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  trustedOrigins: ['exp://127.0.0.1:8081', 'myapp://'], 
+  plugins: [
+    expo(),
+  ],
 });
